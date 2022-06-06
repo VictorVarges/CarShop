@@ -84,7 +84,7 @@ class CarControlller extends Controller<Car> {
     if (id.length < 24) {
       return res.status(400).json({ error: this.mess.CARAC_ERR });
     }
-    
+
     try {
       const updateCarById = await this.service.up(id, body);
 
@@ -93,7 +93,7 @@ class CarControlller extends Controller<Car> {
       }
 
       return 'error' in updateCarById
-        ? res.status(this.code.NOT_FOUND).json({ error: this.mess.NOT_FOUND })
+        ? res.status(this.code.BAD_REQUEST).json({ error: this.mess.NOT_FOUND })
         : res.status(this.code.OK).json(updateCarById);
     } catch (error) {
       return res.status(500).json({ error: this.mess.INTERNAL });
