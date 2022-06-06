@@ -9,10 +9,21 @@ export default class CarService extends Service<Car> {
 
   create = async (obj: Car): Promise<Car | ServiceError | null> => {
     const parsed = CarSchema.safeParse(obj);
-    
+
     if (!parsed.success) {
       return { error: parsed.error };
     }
     return this.model.create(obj);
+  };
+
+  up = async (id: string, car: Car):
+  Promise<Car | ServiceError | null> => {
+    const validated = CarSchema.safeParse(car);
+
+    if (!validated.success) {
+      return { error: validated.error };
+    }
+
+    return this.model.up(id, car);
   };
 }
