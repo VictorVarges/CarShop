@@ -80,20 +80,42 @@ class CarControlller extends Controller<Car> {
   Promise<typeof res> => {
     const { id } = req.params;
     const { body } = req;
-
+    
+    if (id.length < 24) {
+      return res.status(400).json({ error: this.mess.CARAC_ERR });
+    }
+    
     try {
-      if (id.length < 24) {
-        return res.status(400).json({ error: this.mess.CARAC_ERR });
-      }
-      const carById = await this.service.up(id, body);
+      const updateCarById = await this.service.up(id, body);
 
-      if (!carById) { 
+      if (!updateCarById) { 
         return res.status(404).json({ error: this.mess.NOT_FOUND });
       }
 
-      return 'error' in carById
+      return 'error' in updateCarById
         ? res.status(this.code.NOT_FOUND).json({ error: this.mess.NOT_FOUND })
-        : res.status(this.code.OK).json(carById);
+        : res.status(this.code.OK).json(updateCarById);
+    } catch (error) {
+      return res.status(500).json({ error: this.mess.INTERNAL });
+    }
+  };
+
+  delete = async (
+    req: Request<{ id: string; }>,
+    res: Response<Car | ResponseError>,
+  ): Promise<typeof res> => {
+    const { id } = req.params;
+
+    if (id.length < 24) {
+      return res.status(400).json({ error: this.mess.CARAC_ERR });
+    }
+
+    try {
+      const deleteCarById = await this.service.delete(id);
+
+      return deleteCarById
+        ? res.status(204).json(deleteCarById)
+        : res.status(404).json({ error: this.code.NOT_FOUND });
     } catch (error) {
       return res.status(500).json({ error: this.mess.INTERNAL });
     }
