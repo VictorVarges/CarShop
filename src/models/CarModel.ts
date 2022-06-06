@@ -12,7 +12,7 @@ const carSchema = new Schema<CarDocument>({
   buyValue: Number,
   doorsQty: Number,
   seatsQty: Number,
-});
+}, { vesionKey: false });
 
 export default class CarModel extends MongoModel<Car> {
   constructor(model = createModel('Cars', carSchema)) {
