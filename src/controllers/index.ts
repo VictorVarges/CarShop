@@ -24,11 +24,14 @@ abstract class Controller<T> {
     res: Response<T | ResponseError>,
   ): Promise<typeof res>;
 
-  read = async (
+  abstract read(
     _req: Request,
     res: Response<T[] | ResponseError>,
-  ): Promise<typeof res>
+  ): Promise<typeof res>;
 
-    
+  abstract readOne(
+    req: Request<{ id: string; }>,
+    res: Response<T | ResponseError>
+  ): Promise<typeof res>;
 }
 export default Controller;

@@ -54,6 +54,27 @@ class CarControlller extends Controller<Car> {
         .json({ error: this.mess.INTERNAL });
     }
   };
+
+  readOne = async (
+    req: Request<{ id: string; }>,
+    res: Response<Car | ResponseError>,
+  ): Promise<typeof res> => {
+    const { id } = req.params;
+    try {
+      if (id.length < 24) {
+        return res
+          .status(this.code.BAD_REQUEST).json({ error: this.mess.CARAC_ERR });
+      }
+      const carById = await this.service.readOne(id);
+
+      return carById
+        ? res.status(this.code.OK).json(carById)
+        : res.status(this.code.NOT_FOUND).json({ error: this.mess.NOT_FOUND });
+    } catch (error) {
+      return res
+        .status(this.code.INTERNAL_CODE).json({ error: this.mess.INTERNAL });
+    }
+  };
 }
 
 export default CarControlller;
