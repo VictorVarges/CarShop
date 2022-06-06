@@ -27,15 +27,15 @@ class CarControlller extends Controller<Car> {
   ): Promise<typeof res> => {
     const { body } = req;
     try {
-      const car = await this.service.create(body);
-      if (!car) {
+      const createNewCar = await this.service.create(body);
+      if (!createNewCar) {
         return res.status(this.code.INTERNAL_CODE)
           .json({ error: this.mess.INTERNAL });
       }
-      if ('error' in car) {
-        return res.status(this.code.BAD_REQUEST).json(car);
+      if ('error' in createNewCar) {
+        return res.status(this.code.BAD_REQUEST).json(createNewCar);
       }
-      return res.status(this.code.CREATED).json(car);
+      return res.status(this.code.CREATED).json(createNewCar);
     } catch (err) {
       return res.status(this.code.INTERNAL_CODE)
         .json({ error: this.mess.INTERNAL });
