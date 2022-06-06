@@ -27,14 +27,8 @@ abstract class Controller<T> {
   read = async (
     _req: Request,
     res: Response<T[] | ResponseError>,
-  ): Promise<typeof res> => {
-    try {
-      const objs = await this.service.read();
-      return res.json(objs);
-    } catch (err) {
-      return res.status(this.code.INTERNAL_CODE)
-        .json({ error: this.mess.INTERNAL });
-    }
-  };
+  ): Promise<typeof res>
+
+    
 }
 export default Controller;
